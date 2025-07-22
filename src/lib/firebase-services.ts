@@ -8,13 +8,10 @@ import {
   setDoc,
   deleteDoc,
   query,
-  where,
   orderBy,
-  limit,
   serverTimestamp,
-  Timestamp,
 } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
+import { ref, deleteObject } from 'firebase/storage';
 import { db, storage } from './firebase';
 import type { User, Store, Product, Order, Customer, Coupon } from '@/types';
 

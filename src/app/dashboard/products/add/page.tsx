@@ -13,7 +13,7 @@ import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import { Store, Upload, X, Sparkles } from 'lucide-react';
 import Link from 'next/link';
-import { createProduct, uploadImage } from '@/lib/firebase-services';
+import { createProduct } from '@/lib/firebase-services';
 import { toast } from 'sonner';
 import type { Product } from '@/types';
 
@@ -415,79 +415,6 @@ export default function AddProductPage() {
     } catch (error) {
       console.error('Error generating name:', error);
       toast.error('Error generating name');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const suggestPrice = async () => {
-    if (!user || (user.planType === 'free' && user.email !== 'test@example.com')) {
-      toast.error('This feature is available for paid plan users only');
-      return;
-    }
-
-    try {
-      setLoading(true);
-      
-      // Load AI settings
-      const aiSettings = localStorage.getItem('ai_settings');
-      const settings = aiSettings ? JSON.parse(aiSettings) : {
-        enableAI: true,
-        aiModel: 'gpt-3.5-turbo',
-        temperature: 0.7,
-        maxTokens: 500,
-        customPrompt: ''
-      };
-
-      if (!settings.enableAI) {
-        toast.error('Please enable AI from settings first');
-        return;
-      }
-
-      console.log('Suggesting price with AI settings:', settings);
-
-      // Simulate AI price suggestion
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      // Suggest smart prices based on product type
-      const priceRanges = {
-        'Phone': { min: 200, max: 800 },
-        'Laptop': { min: 500, max: 2000 },
-        'Headphones': { min: 20, max: 150 },
-        'Watch': { min: 30, max: 300 },
-        'Bag': { min: 20, max: 100 },
-        'Electronics': { min: 50, max: 500 },
-        'Clothing': { min: 10, max: 80 },
-        'Furniture': { min: 50, max: 400 },
-        'Sports': { min: 15, max: 120 },
-        'Beauty': { min: 10, max: 60 }
-      };
-
-      // Search for product category
-      let suggestedPrice = 500; // Default price
-      for (const [category, range] of Object.entries(priceRanges)) {
-        if (formData.name.toLowerCase().includes(category) || 
-            formData.category.toLowerCase().includes(category)) {
-          suggestedPrice = Math.floor(Math.random() * (range.max - range.min + 1)) + range.min;
-          break;
-        }
-      }
-
-      // If no category was found, use a reasonable random price
-      if (suggestedPrice === 500) {
-        suggestedPrice = Math.floor(Math.random() * 1000) + 100;
-      }
-
-      setFormData(prev => ({
-        ...prev,
-        price: suggestedPrice.toString()
-      }));
-
-      toast.success(`Suggested price: ${suggestedPrice} USD`);
-      console.log('Price suggested:', suggestedPrice);
-    } catch (error) {
-      console.error('Error suggesting price:', error);
-      toast.error('Error suggesting price');
     } finally {
       setLoading(false);
     }

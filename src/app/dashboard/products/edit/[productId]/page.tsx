@@ -12,7 +12,7 @@ import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import { Store, Upload, X, Sparkles, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import { getProduct, updateProduct, uploadImage } from '@/lib/firebase-services';
+import { getProduct, updateProduct } from '@/lib/firebase-services';
 import { toast } from 'sonner';
 import type { Product } from '@/types';
 
@@ -106,7 +106,6 @@ export default function EditProductPage() {
   const [uploadingImages, setUploadingImages] = useState(false);
   const [product, setProduct] = useState<Product | null>(null);
   const [oldPrice, setOldPrice] = useState(product?.oldPrice ? product.oldPrice.toString() : '');
-  const [error, setError] = useState('');
   const [sizes, setSizes] = useState<{ value: string; price?: string }[]>(product?.sizes || []);
   const [colors, setColors] = useState<{ value: string; price?: string }[]>(product?.colors || []);
   const [sizeInput, setSizeInput] = useState('');
@@ -264,7 +263,6 @@ export default function EditProductPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
     if (!user || !product) return;
     if (!formData.name.trim() || !formData.description.trim() || !formData.price.trim()) {
       toast.error('يرجى ملء جميع الحقول المطلوبة');

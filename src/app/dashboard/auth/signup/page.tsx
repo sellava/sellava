@@ -1,3 +1,3 @@
-import React from 'react';
+// احذف import React إذا لم يكن مستخدمًا
 
  

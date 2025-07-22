@@ -22,7 +22,7 @@ import {
   validateCoupon 
 } from '@/lib/cart-service';
 import { ConnectionStatus } from '@/components/ui/connection-status';
-import { CartStatus } from '@/components/ui/cart-status';
+import type { CartItem } from '@/types';
 
 export default function CartCheckoutPage() {
   const router = useRouter();
@@ -31,7 +31,7 @@ export default function CartCheckoutPage() {
   const [couponCode, setCouponCode] = useState('');
   const [appliedCouponState, setAppliedCouponState] = useState<string | null>(null);
   const [discountAmount, setDiscountAmount] = useState(0);
-  const [cartItems, setCartItems] = useState<any[]>([]);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [formData, setFormData] = useState({
     customerName: '',
     email: '',
@@ -42,8 +42,8 @@ export default function CartCheckoutPage() {
 
   const [subtotal, setSubtotal] = useState(0);
   const [finalTotal, setFinalTotal] = useState(0);
-  const [lastError, setLastError] = useState<any>(null);
-  const [invalidItems, setInvalidItems] = useState<any[]>([]);
+  const [lastError, setLastError] = useState<unknown>(null);
+  const [invalidItems, setInvalidItems] = useState<CartItem[]>([]);
 
   // ✅ Delivery options
   const [deliveryOptions, setDeliveryOptions] = useState<Record<string, Record<string, number>>>({});
@@ -54,10 +54,10 @@ export default function CartCheckoutPage() {
   const [deliveryCost, setDeliveryCost] = useState(0);
 
   // --- Store coupons ---
-  const [couponDetails, setCouponDetails] = useState<any>(null);
+  const [couponDetails, setCouponDetails] = useState<Record<string, unknown> | null>(null);
 
   // --- Payment settings ---
-  const [storePaymentSettings, setStorePaymentSettings] = useState<any>(null);
+  const [storePaymentSettings, setStorePaymentSettings] = useState<Record<string, unknown> | null>(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<'electronic' | 'cash' | null>(null);
 
   const [countryTouched, setCountryTouched] = useState(false);

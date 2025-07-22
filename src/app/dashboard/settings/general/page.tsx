@@ -9,13 +9,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Store, ArrowLeft, CreditCard, CheckCircle, MessageCircle, Instagram, Mail } from 'lucide-react';
+import { Store, ArrowLeft, CreditCard, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 import { getStore, createStore, updateStore } from '@/lib/firebase-services';
 import { toast } from 'sonner';
 import type { Store as StoreType } from '@/types';
-import { uploadImage } from '@/lib/firebase-services';
-import Image from 'next/image';
 
 export default function GeneralSettingsPage() {
   const { user } = useAuth();

@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { useLanguage } from '@/contexts/language-context';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -10,10 +9,9 @@ import { Input } from '@/components/ui/input';
 import { ShoppingCart, Store, Search, Phone, Mail, Instagram, Package, MessageCircle } from 'lucide-react';
 import Link from 'next/link';
 import { getStore, getProducts } from '@/lib/firebase-services';
-import { addToCart, getCartItemCount, clearCart } from '@/lib/cart-service';
+import { getCartItemCount, clearCart } from '@/lib/cart-service';
 import type { Store as StoreType, Product } from '@/types';
 import { toast } from 'sonner';
-import { Select } from '@/components/ui/select';
 
 // سلايدر صور بسيط للمنتج
 function ProductImageSlider({ images }: { images?: string[] }) {
@@ -71,7 +69,6 @@ function ProductImageSlider({ images }: { images?: string[] }) {
 export default function PublicStorePage() {
   const params = useParams();
   const userId = params?.userId as string;
-  const { t, language } = useLanguage();
   
   const [store, setStore] = useState<StoreType | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
@@ -471,7 +468,6 @@ export default function PublicStorePage() {
               <Link href="/cart">
                 <Button variant="outline" className="relative text-white border-white/30 hover:bg-white/10">
                   <ShoppingCart className="h-4 w-4 mr-2" />
-                  {t('cart')}
                   {cartCount > 0 && (
                     <Badge className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0 flex items-center justify-center bg-red-500 text-white">
                       {cartCount}
@@ -724,7 +720,7 @@ export default function PublicStorePage() {
                         }
                     >
                       <ShoppingCart className="h-4 w-4 mr-1" />
-                      {t('addToCart')}
+                      Add to Cart
                     </Button>
                   </div>
                 </CardContent>

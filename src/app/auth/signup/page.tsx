@@ -13,7 +13,7 @@ import Link from 'next/link';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { createStore } from '@/lib/firebase-services';
-import type { PlanType } from '@/types';
+import type { PlanType, Store } from '@/types';
 
 export default function SignupPage() {
   const router = useRouter();
@@ -64,7 +64,7 @@ export default function SignupPage() {
         userId: userCredential.user.uid,
         storeTitle: `${formData.name}'s Store`,
         planType: plan,
-      });
+      } as Omit<Store, 'createdAt' | 'updatedAt'>);
 
       toast.success('Account created successfully!');
 
@@ -75,12 +75,14 @@ export default function SignupPage() {
       } else {
         router.push('/try-for-free');
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Signup error:', error);
       
-      if (error.code === 'auth/email-already-in-use') {
+      const err = error as { code?: string; message?: string };
+      
+      if (err.code === 'auth/email-already-in-use') {
         toast.error('Email already in use. Please try a different email.');
-      } else if (error.code === 'auth/weak-password') {
+      } else if (err.code === 'auth/weak-password') {
         toast.error('Password is too weak. Please choose a stronger password.');
       } else {
         toast.error('Error creating account. Please try again.');
