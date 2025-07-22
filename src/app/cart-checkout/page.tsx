@@ -82,7 +82,7 @@ export default function CartCheckoutPage() {
             setDeliveryOptions(JSON.parse(localOptions));
             setStoreLoading(false);
             return;
-          } catch (e) {
+          } catch {
             // If there's an error in conversion, ignore and use from store
           }
         }
@@ -218,11 +218,13 @@ export default function CartCheckoutPage() {
     }
     // Get coupons from localStorage
     const couponsRaw = localStorage.getItem(`coupons_${storeId}`);
-    let coupons: any[] = [];
+    let coupons: Coupon[] = [];
     if (couponsRaw) {
       try {
         coupons = JSON.parse(couponsRaw);
-      } catch {}
+      } catch {
+        // If there's an error in conversion, ignore and use from store
+      }
     }
     const coupon = coupons.find(c => c.code.toLowerCase() === couponCode.trim().toLowerCase());
     if (!coupon) {
