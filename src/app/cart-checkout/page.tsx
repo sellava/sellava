@@ -2,13 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/contexts/auth-context';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Store, CreditCard, Shield, CheckCircle, ShoppingCart, ArrowLeft, MapPin, Globe2, Banknote } from 'lucide-react';
+import { Store, CreditCard, CheckCircle, ShoppingCart, MapPin, Globe2, Banknote } from 'lucide-react';
 import { toast } from 'sonner';
 import { createOrder, getStore } from '@/lib/firebase-services';
 import Link from 'next/link';
@@ -23,12 +22,7 @@ import {
   validateCoupon 
 } from '@/lib/cart-service';
 import { ConnectionStatus } from '@/components/ui/connection-status';
-import { DebugInfo } from '@/components/ui/debug-info';
-import { DataPreview } from '@/components/ui/data-preview';
 import { CartStatus } from '@/components/ui/cart-status';
-import { ErrorDetails } from '@/components/ui/error-details';
-import { InvalidItemsDetails } from '@/components/ui/invalid-items-details';
-import Image from 'next/image';
 
 export default function CartCheckoutPage() {
   const router = useRouter();
