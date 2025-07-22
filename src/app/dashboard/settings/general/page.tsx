@@ -15,6 +15,7 @@ import { getStore, createStore, updateStore } from '@/lib/firebase-services';
 import { toast } from 'sonner';
 import type { Store as StoreType } from '@/types';
 import { uploadImage } from '@/lib/firebase-services';
+import Image from 'next/image';
 
 export default function GeneralSettingsPage() {
   const { user } = useAuth();
@@ -45,6 +46,7 @@ export default function GeneralSettingsPage() {
     try {
       setLoading(true);
       const storeData = await getStore(user.uid);
+      const localLogo = localStorage.getItem(`store_logo_${user.uid}`);
       
       if (storeData) {
         setFormData({
@@ -52,7 +54,7 @@ export default function GeneralSettingsPage() {
           storeBio: storeData.storeBio || '',
           storeCountry: storeData.storeCountry || '',
           domain: storeData.domain || '',
-          logo: storeData.logo || '',
+          logo: localLogo || storeData.logo || '',
         });
       }
     } catch (error) {
@@ -80,12 +82,21 @@ export default function GeneralSettingsPage() {
     if (!file) return;
     setLogoUploading(true);
     try {
-      const url = await uploadImage(file, user.uid);
-      setFormData(prev => ({ ...prev, logo: url }));
-      toast.success('تم رفع اللوغو بنجاح');
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64 = reader.result as string;
+        setFormData(prev => ({ ...prev, logo: base64 }));
+        localStorage.setItem(`store_logo_${user.uid}`, base64);
+        toast.success('تم حفظ اللوغو محليًا');
+        setLogoUploading(false);
+      };
+      reader.onerror = () => {
+        toast.error('حدث خطأ أثناء قراءة الصورة');
+        setLogoUploading(false);
+      };
+      reader.readAsDataURL(file);
     } catch (error) {
       toast.error('حدث خطأ أثناء رفع اللوغو');
-    } finally {
       setLogoUploading(false);
     }
   };
@@ -162,20 +173,12 @@ export default function GeneralSettingsPage() {
               <h1 className="text-3xl font-bold text-white">General Settings</h1>
             </div>
             
-            <div className="flex items-center gap-3">
-              <a href="mailto:storebuldier@gmail.com" target="_blank" rel="noopener noreferrer">
-                <Button variant="secondary" className="flex items-center gap-2">
-                  <Mail className="h-4 w-4" />
-                  Customer Support
-                </Button>
-              </a>
-              <Link href="/dashboard">
-                <Button variant="outline" className="flex items-center text-white border-white/30 hover:bg-white/10">
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  Back to Dashboard
-                </Button>
-              </Link>
-            </div>
+            <Link href="/dashboard">
+              <Button variant="outline" className="flex items-center text-white border-white/30 hover:bg-white/10">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Dashboard
+              </Button>
+            </Link>
           </div>
         </div>
       </header>
@@ -238,7 +241,13 @@ export default function GeneralSettingsPage() {
                       disabled={logoUploading}
                     />
                     {formData.logo && (
-                      <img src={formData.logo} alt="Logo Preview" className="w-16 h-16 object-contain rounded border" />
+                      <img
+                        src={formData.logo}
+                        alt="Logo Preview"
+                        width={64}
+                        height={64}
+                        className="w-16 h-16 object-contain rounded border"
+                      />
                     )}
                   </div>
                   {logoUploading && <p className="text-xs text-blue-500">Uploading logo...</p>}

@@ -24,6 +24,7 @@ import {
 import { toast } from 'sonner';
 import { getOrders, updateOrderStatus as updateOrderStatusInFirebase, deleteOrder } from '@/lib/firebase-services';
 import type { Order as FirebaseOrder } from '@/types';
+import Image from 'next/image';
 
 interface Order extends FirebaseOrder {
   customerInfo?: {
@@ -1062,10 +1063,12 @@ export default function OrdersPage() {
                       {order.items.map((item, index) => (
                         <div key={index} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
                           {item.productImage && (
-                            <img 
+                            <Image 
                               src={item.productImage} 
                               alt={item.productName}
                               className="w-10 h-10 object-cover rounded-lg"
+                              width={40}
+                              height={40}
                             />
                           )}
                           <div className="flex-1">

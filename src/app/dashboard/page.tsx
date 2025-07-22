@@ -1812,11 +1812,6 @@ export default function DashboardPage() {
             </div>
             
             <div className="flex items-center gap-4">
-              <Link href="/">
-                <Button variant="secondary" className="flex items-center gap-2">
-                  Home
-                </Button>
-              </Link>
               {isTestUser && (
                 <div className="bg-blue-50 border border-blue-200 rounded-lg px-3 py-2">
                   <p className="text-xs text-blue-700">

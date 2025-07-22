@@ -78,12 +78,12 @@ export default function OrderConfirmationPage() {
         <div className="text-center mb-8">
           <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <CheckCircle className="h-8 w-8 text-green-600" />
-          </div>
+              </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Order Confirmed!</h1>
           <p className="text-gray-600">
             Thank you for your order. We'll send you updates about your delivery.
           </p>
-        </div>
+            </div>
 
         {/* Order Details */}
         <Card className="mb-8">
@@ -93,16 +93,16 @@ export default function OrderConfirmationPage() {
           <CardContent>
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <span className="text-gray-600">Order ID:</span>
+                    <span className="text-gray-600">Order ID:</span>
                 <span className="font-semibold">#{orderData.orderId}</span>
-              </div>
+                  </div>
               
               <div className="flex justify-between items-center">
-                <span className="text-gray-600">Status:</span>
+                    <span className="text-gray-600">Status:</span>
                 <Badge className={getStatusColor(orderData.status)}>
                   {getStatusText(orderData.status)}
                 </Badge>
-              </div>
+                  </div>
               
               <div className="flex justify-between items-center">
                 <span className="text-gray-600">Payment Method:</span>
@@ -113,19 +113,19 @@ export default function OrderConfirmationPage() {
                   </span>
                 </div>
               </div>
-              
+
               <div className="flex justify-between items-center">
                 <span className="text-gray-600">Total Amount:</span>
                 <span className="text-lg font-bold text-green-600">
                   ${orderData.total}
-                </span>
-              </div>
+                      </span>
+                    </div>
               
               <div className="flex justify-between items-center">
                 <span className="text-gray-600">Estimated Delivery:</span>
                 <span className="font-semibold">{orderData.estimatedDelivery}</span>
-              </div>
-            </div>
+                    </div>
+                  </div>
           </CardContent>
         </Card>
 
@@ -139,7 +139,7 @@ export default function OrderConfirmationPage() {
               <div className="flex items-start">
                 <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3 mt-0.5">
                   <span className="text-sm font-bold text-blue-600">1</span>
-                </div>
+                  </div>
                 <div>
                   <h4 className="font-semibold">Order Confirmation</h4>
                   <p className="text-sm text-gray-600">
@@ -147,7 +147,7 @@ export default function OrderConfirmationPage() {
                   </p>
                 </div>
               </div>
-              
+
               <div className="flex items-start">
                 <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3 mt-0.5">
                   <span className="text-sm font-bold text-blue-600">2</span>
@@ -159,11 +159,11 @@ export default function OrderConfirmationPage() {
                   </p>
                 </div>
               </div>
-              
+
               <div className="flex items-start">
                 <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3 mt-0.5">
                   <span className="text-sm font-bold text-blue-600">3</span>
-                </div>
+                  </div>
                 <div>
                   <h4 className="font-semibold">Delivery</h4>
                   <p className="text-sm text-gray-600">
@@ -190,7 +190,7 @@ export default function OrderConfirmationPage() {
           </Button>
           
           <Button
-            onClick={() => router.push('/dashboard')}
+            onClick={() => router.push('/')}
             className="bg-gradient-primary hover:opacity-90 text-white flex items-center"
           >
             <ShoppingBag className="h-4 w-4 mr-2" />

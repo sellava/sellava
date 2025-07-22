@@ -15,6 +15,7 @@ import { Store, Upload, X, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { createProduct, uploadImage } from '@/lib/firebase-services';
 import { toast } from 'sonner';
+import type { Product } from '@/types';
 
 // ترجمة النصوص بجميع اللغات
 const translations = {
@@ -283,7 +284,7 @@ export default function AddProductPage() {
   };
 
   const generateDescription = async () => {
-    if (!user || (user.planType !== 'free' && user.email !== 'test@example.com')) {
+    if (!user || (user.planType === 'free' && user.email !== 'test@example.com')) {
       toast.error('This feature is available for paid plan users only');
       return;
     }
@@ -360,7 +361,7 @@ export default function AddProductPage() {
   };
 
   const generateName = async () => {
-    if (!user || (user.planType !== 'free' && user.email !== 'test@example.com')) {
+    if (!user || (user.planType === 'free' && user.email !== 'test@example.com')) {
       toast.error('This feature is available for paid plan users only');
       return;
     }
@@ -420,7 +421,7 @@ export default function AddProductPage() {
   };
 
   const suggestPrice = async () => {
-    if (!user || (user.planType !== 'free' && user.email !== 'test@example.com')) {
+    if (!user || (user.planType === 'free' && user.email !== 'test@example.com')) {
       toast.error('This feature is available for paid plan users only');
       return;
     }
@@ -493,7 +494,7 @@ export default function AddProductPage() {
   };
 
   const generateTags = async () => {
-    if (!user || (user.planType !== 'free' && user.email !== 'test@example.com')) {
+    if (!user || (user.planType === 'free' && user.email !== 'test@example.com')) {
       toast.error('This feature is available for paid plan users only');
       return;
     }
@@ -656,37 +657,34 @@ export default function AddProductPage() {
           }
 
           // Create product
-          let productData: any = {
+          const price = parseFloat(formData.price);
+          const parsedOldPrice = oldPrice ? parseFloat(oldPrice) : undefined;
+          const productData: Omit<Product, 'id' | 'createdAt' | 'updatedAt'> = {
             name: formData.name,
             description: formData.description,
-            price: parseFloat(formData.price),
+            price: price,
             images: uploadedImageUrls,
             inStock,
+            oldPrice: parsedOldPrice,
+            category: formData.category || undefined,
+            tags: formData.tags || undefined,
+            sizes: sizes.length > 0 ? sizes : undefined,
+            colors: colors.length > 0 ? colors : undefined,
           };
-
-          const parsedOldPrice = oldPrice ? parseFloat(oldPrice) : undefined;
-          const parsedPrice = parseFloat(formData.price);
-
-          if (parsedOldPrice && parsedOldPrice > parsedPrice) {
-            productData.oldPrice = parsedOldPrice;
-          }
-          if (formData.category) productData.category = formData.category;
-          if (formData.tags) productData.tags = formData.tags;
-          if (sizes.length > 0) productData.sizes = sizes;
-          if (colors.length > 0) productData.colors = colors;
-
-          // Remove empty fields manually
-          for (const key in productData) {
-            if (
-              productData[key] === undefined ||
-              productData[key] === null ||
-              (typeof productData[key] === 'string' && productData[key].trim() === '')
-            ) {
-              delete productData[key];
-            }
-          }
-
-          await createProduct(user.uid, productData);
+          // تنظيف الحقول الفارغة يدويًا مع الحفاظ على الحقول المطلوبة
+          const cleanedData = {
+            name: productData.name,
+            description: productData.description,
+            price: productData.price,
+            inStock: productData.inStock,
+            images: productData.images,
+            oldPrice: productData.oldPrice,
+            category: productData.category,
+            tags: productData.tags,
+            sizes: productData.sizes,
+            colors: productData.colors,
+          } as Omit<Product, 'id' | 'createdAt' | 'updatedAt'>;
+          await createProduct(user.uid, cleanedData);
 
           toast.success('Product added successfully');
           router.push('/dashboard');

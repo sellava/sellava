@@ -28,6 +28,7 @@ import { DataPreview } from '@/components/ui/data-preview';
 import { CartStatus } from '@/components/ui/cart-status';
 import { ErrorDetails } from '@/components/ui/error-details';
 import { InvalidItemsDetails } from '@/components/ui/invalid-items-details';
+import Image from 'next/image';
 
 export default function CartCheckoutPage() {
   const router = useRouter();
@@ -785,6 +786,8 @@ export default function CartCheckoutPage() {
                               src={item.image} 
                               alt={item.name}
                               className="w-12 h-12 object-cover rounded-lg"
+                              width={48}
+                              height={48}
                             />
                           )}
                           <div>

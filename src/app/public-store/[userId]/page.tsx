@@ -30,6 +30,8 @@ function ProductImageSlider({ images }: { images?: string[] }) {
       <img
         src={images[current]}
         alt={`Product image ${current + 1}`}
+        width={400}
+        height={400}
         className="w-full h-full object-cover rounded-lg"
       />
       {images.length > 1 && (
@@ -80,6 +82,7 @@ export default function PublicStorePage() {
   const [selectedColors, setSelectedColors] = useState<{ [productId: string]: string }>({});
   const [selectedSizes, setSelectedSizes] = useState<{ [productId: string]: string }>({});
   const [displayPrices, setDisplayPrices] = useState<{ [productId: string]: number }>({});
+  const [logoToShow, setLogoToShow] = useState(store?.logo || '');
 
   useEffect(() => {
     if (userId) {
@@ -182,6 +185,14 @@ export default function PublicStorePage() {
     });
     setDisplayPrices(newPrices);
   }, [filteredProducts, selectedColors, selectedSizes]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && store) {
+      const localLogo = localStorage.getItem(`store_logo_${userId}`);
+      if (localLogo) setLogoToShow(localLogo);
+      else setLogoToShow(store.logo || '');
+    }
+  }, [userId, store]);
 
   const loadStoreData = async () => {
     try {
@@ -439,12 +450,14 @@ export default function PublicStorePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-8">
             <div className="flex items-center">
-              {store?.logo ? (
-                <img src={store.logo} alt="Store Logo" className="w-12 h-12 rounded-full object-cover mr-4 border-2 border-white" />
-              ) : (
-              <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mr-4">
-                <Store className="h-6 w-6 text-white" />
-              </div>
+              {logoToShow && (
+                <img
+                  src={logoToShow}
+                  alt="Store Logo"
+                  width={48}
+                  height={48}
+                  className="w-12 h-12 rounded-full object-cover mr-4 border-2 border-white"
+                />
               )}
               <div>
                 <h1 className="text-3xl font-bold text-white">{store?.storeTitle || 'متجر'}</h1>

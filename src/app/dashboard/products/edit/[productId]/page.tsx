@@ -275,7 +275,7 @@ export default function EditProductPage() {
       toast.error('يرجى إدخال سعر صحيح');
       return;
     }
-    let productData: any = {
+    const productData: Record<string, any> = {
       name: formData.name,
       description: formData.description,
       price: price,

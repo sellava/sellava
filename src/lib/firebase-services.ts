@@ -18,6 +18,10 @@ import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage
 import { db, storage } from './firebase';
 import type { User, Store, Product, Order, Customer, Coupon } from '@/types';
 
+// ضع بياناتك هنا:
+const CLOUDINARY_CLOUD_NAME = 'YOUR_CLOUD_NAME'; // ← عدلها لاسم حسابك في Cloudinary
+const CLOUDINARY_UNSIGNED_PRESET = 'YOUR_UNSIGNED_PRESET'; // ← عدلها لاسم unsigned preset
+
 // User Services
 export const createUser = async (uid: string, userData: Omit<User, 'uid' | 'createdAt' | 'emailVerified'>) => {
   const userRef = doc(db, 'users', uid);
@@ -55,7 +59,7 @@ export const updateUserPlan = async (uid: string, planType: 'free' | 'monthly' |
   const userRef = doc(db, 'users', uid);
   const userSnap = await getDoc(userRef);
 
-  let updateData: any = {
+  const updateData: Partial<User> = {
     planType,
     updatedAt: serverTimestamp(),
   };
@@ -176,7 +180,7 @@ export const updateStore = async (userId: string, updates: Partial<Store>) => {
 // Product Services
 export const createProduct = async (userId: string, productData: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>) => {
   // تنظيف الكائن من undefined/null/فراغ
-  const cleanedProductData: any = {};
+  const cleanedProductData: Record<string, unknown> = {};
   for (const key in productData) {
     const value = (productData as any)[key];
     if (
@@ -380,14 +384,21 @@ export const deleteCoupon = async (userId: string, couponId: string) => {
 
 // Storage Services
 export const uploadImage = async (file: File, userId: string, productId?: string): Promise<string> => {
-  const timestamp = Date.now();
-  const fileName = productId ? `${productId}_${timestamp}` : `${userId}_${timestamp}`;
-  const storageRef = ref(storage, `images/${userId}/${fileName}`);
-  
-  await uploadBytes(storageRef, file);
-  const downloadURL = await getDownloadURL(storageRef);
-  
-  return downloadURL;
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', CLOUDINARY_UNSIGNED_PRESET);
+
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+    method: 'POST',
+    body: formData,
+  });
+
+  const data = await res.json();
+  if (!data.secure_url) {
+    console.error('Cloudinary upload error:', data);
+    throw new Error(data.error?.message || 'Cloudinary upload failed');
+  }
+  return data.secure_url;
 };
 
 export const deleteImage = async (imageUrl: string) => {
@@ -453,8 +464,8 @@ export const ensureStoreExists = async (userId: string): Promise<boolean> => {
 };
 
 // Helper function to clean order data
-export const cleanOrderData = (orderData: any): any => {
-  const cleanData: any = {};
+export const cleanOrderData = (orderData: Record<string, any>): Record<string, any> => {
+  const cleanData: Record<string, any> = {};
   
   for (const [key, value] of Object.entries(orderData)) {
     if (value === undefined) {

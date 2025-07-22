@@ -1,3 +1,5 @@
+import type { FieldValue } from 'firebase/firestore';
+
 export type Language = 'ar' | 'en';
 export type PlanType = 'free' | 'monthly' | 'sixmonths' | 'yearly';
 export type OrderStatus = 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled';
@@ -9,9 +11,10 @@ export interface User {
   phone: string;
   country: string;
   planType: PlanType;
-  subscriptionStartDate?: Date;
-  subscriptionExpiryDate?: Date;
+  subscriptionStartDate?: Date | null;
+  subscriptionExpiryDate?: Date | null;
   createdAt: Date;
+  updatedAt?: Date | null | FieldValue;
   emailVerified: boolean;
 }
 
