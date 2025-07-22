@@ -42,8 +42,6 @@ export default function CartCheckoutPage() {
 
   const [subtotal, setSubtotal] = useState(0);
   const [finalTotal, setFinalTotal] = useState(0);
-  const [lastError, setLastError] = useState<unknown>(null);
-  const [invalidItems, setInvalidItems] = useState<CartItem[]>([]);
 
   // ✅ Delivery options
   const [deliveryOptions, setDeliveryOptions] = useState<Record<string, Record<string, number>>>({});
@@ -54,7 +52,7 @@ export default function CartCheckoutPage() {
   const [deliveryCost, setDeliveryCost] = useState(0);
 
   // --- Store coupons ---
-  const [couponDetails, setCouponDetails] = useState<Record<string, unknown> | null>(null);
+  const [couponDetails, setCouponDetails] = useState<Record<string, any> | null>(null);
 
   // --- Payment settings ---
   const [storePaymentSettings, setStorePaymentSettings] = useState<Record<string, unknown> | null>(null);
@@ -194,12 +192,6 @@ export default function CartCheckoutPage() {
     }
   }, [selectedCountry, selectedCity, deliveryOptions]);
 
-  const handleCartUpdate = (newItems: any[]) => {
-    setCartItems(newItems);
-    setInvalidItems([]);
-    setLastError(null);
-  };
-
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
@@ -311,7 +303,6 @@ export default function CartCheckoutPage() {
     );
     
     if (invalidItems.length > 0) {
-      setInvalidItems(invalidItems);
       console.error('Invalid cart items found:', {
         totalItems: cartItems.length,
         invalidItems: invalidItems.length,
@@ -461,7 +452,6 @@ export default function CartCheckoutPage() {
       }
     } catch (error) {
       console.error('Error submitting order:', error);
-      setLastError(error);
       
       // More detailed error message
       let errorMessage = 'Order submission failed';

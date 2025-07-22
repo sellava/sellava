@@ -85,11 +85,6 @@ export default function EditProductPage() {
   const router = useRouter();
   const params = useParams();
   const productId = params?.productId as string;
-  const [lang, setLang] = useState<LangKey>(defaultLang);
-  useEffect(() => {
-    document.documentElement.dir = 'ltr';
-    document.documentElement.lang = 'en';
-  }, []);
   
   const [formData, setFormData] = useState({
     name: '',
@@ -273,7 +268,7 @@ export default function EditProductPage() {
       toast.error('يرجى إدخال سعر صحيح');
       return;
     }
-    const productData: Record<string, any> = {
+    const productData: Record<string, unknown> = {
       name: formData.name,
       description: formData.description,
       price: price,
@@ -380,7 +375,7 @@ export default function EditProductPage() {
             );
           }
           // دمج الصور القديمة والجديدة
-          let allImages = [...existingImages, ...uploadedImageUrls];
+          const allImages = [...existingImages, ...uploadedImageUrls];
           productData.images = allImages;
           await updateProduct(user.uid, productId, productData);
           toast.success('تم تحديث المنتج بنجاح');
@@ -443,25 +438,6 @@ export default function EditProductPage() {
     );
   }
 
-  // قائمة بأسماء اللغات للعرض
-  const languageNames: Record<string, string> = {
-    en: "English",
-    ar: "العربية",
-    es: "Español",
-    de: "Deutsch",
-    fr: "Français",
-    it: "Italiano",
-    pt: "Português",
-    ru: "Русский",
-    zh: "中文",
-    ja: "日本語",
-    tr: "Türkçe",
-    hi: "हिन्दी",
-    id: "Bahasa Indonesia",
-    ko: "한국어",
-    nl: "Nederlands",
-  };
-
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -472,12 +448,12 @@ export default function EditProductPage() {
               <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mr-4">
                 <Store className="h-6 w-6 text-white" />
               </div>
-              <h1 className="text-3xl font-bold text-white mr-6">{translations[lang]?.editProduct}</h1>
+              <h1 className="text-3xl font-bold text-white mr-6">{translations[defaultLang]?.editProduct}</h1>
             </div>
             <Link href="/dashboard">
               <Button variant="outline" className="text-white border-white/30 hover:bg-white/10">
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                {translations[lang]?.backToDashboard}
+                {translations[defaultLang]?.backToDashboard}
               </Button>
             </Link>
           </div>
@@ -488,7 +464,7 @@ export default function EditProductPage() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center">
-              {translations[lang]?.editProduct}
+              {translations[defaultLang]?.editProduct}
               {(user?.planType !== 'free' || user?.email === 'test@example.com') && (
                 <Badge variant="secondary" className="ml-2">
                   <Sparkles className="h-3 w-3 mr-1" />
@@ -497,7 +473,7 @@ export default function EditProductPage() {
               )}
             </CardTitle>
             <CardDescription>
-              {translations[lang]?.editInfo}
+              {translations[defaultLang]?.editInfo}
             </CardDescription>
           </CardHeader>
           
@@ -505,17 +481,17 @@ export default function EditProductPage() {
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Basic Information */}
               <div className="space-y-4">
-                <h3 className="text-lg font-semibold">{translations[lang]?.basicInfo}</h3>
+                <h3 className="text-lg font-semibold">{translations[defaultLang]?.basicInfo}</h3>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="name">{translations[lang]?.productName}</Label>
+                    <Label htmlFor="name">{translations[defaultLang]?.productName}</Label>
                     <div className="flex space-x-2">
                       <Input
                         id="name"
                         value={formData.name}
                         onChange={(e) => handleInputChange('name', e.target.value)}
-                        placeholder={translations[lang]?.enterName}
+                        placeholder={translations[defaultLang]?.enterName}
                         required
                       />
                       {(user?.planType !== 'free' || user?.email === 'test@example.com') && (
@@ -527,14 +503,14 @@ export default function EditProductPage() {
                           className="whitespace-nowrap"
                         >
                           <Sparkles className="h-4 w-4 mr-1" />
-                          {translations[lang]?.generateName}
+                          {translations[defaultLang]?.generateName}
                         </Button>
                       )}
                     </div>
                   </div>
                   
                   <div className="space-y-2">
-                    <Label htmlFor="price">{translations[lang]?.productPrice}</Label>
+                    <Label htmlFor="price">{translations[defaultLang]?.productPrice}</Label>
                     <div className="mb-4 flex gap-4 items-end">
                       <div className="flex-1">
                         <Input
@@ -544,12 +520,12 @@ export default function EditProductPage() {
                           min="0"
                           value={formData.price}
                           onChange={(e) => handleInputChange('price', e.target.value)}
-                          placeholder={translations[lang]?.priceExample}
+                          placeholder={translations[defaultLang]?.priceExample}
                           required
                         />
                       </div>
                       <div className="flex-1">
-                        <Label htmlFor="oldPrice" className="block mb-1 font-medium">{translations[lang]?.oldPrice}</Label>
+                        <Label htmlFor="oldPrice" className="block mb-1 font-medium">{translations[defaultLang]?.oldPrice}</Label>
                         <Input
                           id="oldPrice"
                           type="number"
@@ -558,7 +534,7 @@ export default function EditProductPage() {
                           className="input"
                           min={0}
                           step="0.01"
-                          placeholder={translations[lang]?.priceExample}
+                          placeholder={translations[defaultLang]?.priceExample}
                         />
                       </div>
                     </div>
@@ -567,34 +543,34 @@ export default function EditProductPage() {
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="category">{translations[lang]?.category}</Label>
+                    <Label htmlFor="category">{translations[defaultLang]?.category}</Label>
                     <Input
                       id="category"
                       value={formData.category}
                       onChange={(e) => handleInputChange('category', e.target.value)}
-                      placeholder={translations[lang]?.categoryExample}
+                      placeholder={translations[defaultLang]?.categoryExample}
                     />
                   </div>
                   
                   <div className="space-y-2">
-                    <Label htmlFor="tags">{translations[lang]?.tags}</Label>
+                    <Label htmlFor="tags">{translations[defaultLang]?.tags}</Label>
                     <Input
                       id="tags"
                       value={formData.tags}
                       onChange={(e) => handleInputChange('tags', e.target.value)}
-                      placeholder={translations[lang]?.tagsExample}
+                      placeholder={translations[defaultLang]?.tagsExample}
                     />
                   </div>
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="description">{translations[lang]?.productDescription}</Label>
+                  <Label htmlFor="description">{translations[defaultLang]?.productDescription}</Label>
                   <div className="space-y-2">
                     <Textarea
                       id="description"
                       value={formData.description}
                       onChange={(e) => handleInputChange('description', e.target.value)}
-                      placeholder={translations[lang]?.placeholder}
+                      placeholder={translations[defaultLang]?.placeholder}
                       rows={4}
                       required
                     />
@@ -606,7 +582,7 @@ export default function EditProductPage() {
                         onClick={generateDescription}
                       >
                         <Sparkles className="h-4 w-4 mr-1" />
-                        {translations[lang]?.generateDescription}
+                        {translations[defaultLang]?.generateDescription}
                       </Button>
                     )}
                   </div>
@@ -618,13 +594,13 @@ export default function EditProductPage() {
                     checked={inStock}
                     onCheckedChange={setInStock}
                   />
-                  <Label htmlFor="inStock">{translations[lang]?.inStock}</Label>
+                  <Label htmlFor="inStock">{translations[defaultLang]?.inStock}</Label>
                 </div>
               </div>
 
               {/* Sizes */}
               <div className="space-y-2">
-                <Label>{translations[lang]?.sizes}</Label>
+                <Label>{translations[defaultLang]?.sizes}</Label>
                 <div className="flex gap-2 mb-2 items-center">
                   {!showManualSize ? (
                     <>
@@ -633,31 +609,31 @@ export default function EditProductPage() {
                         onChange={e => setSizeInput(e.target.value)}
                         className="border rounded px-2 py-1"
                       >
-                        <option value="">{translations[lang]?.selectSize}</option>
+                        <option value="">{translations[defaultLang]?.selectSize}</option>
                         {defaultSizes.map((sz) => (
                           <option key={sz} value={sz}>{sz}</option>
                         ))}
                       </select>
                       <Button type="button" variant="outline" size="sm" onClick={() => setShowManualSize(true)}>
-                        {translations[lang]?.addManual}
+                        {translations[defaultLang]?.addManual}
                       </Button>
                     </>
                   ) : (
                     <>
-                      <Input value={sizeInput} onChange={e => setSizeInput(e.target.value)} placeholder={translations[lang]?.sizeExample} />
+                      <Input value={sizeInput} onChange={e => setSizeInput(e.target.value)} placeholder={translations[defaultLang]?.sizeExample} />
                       <Button type="button" variant="outline" size="sm" onClick={() => setShowManualSize(false)}>
-                        {translations[lang]?.pickFromList}
+                        {translations[defaultLang]?.pickFromList}
                       </Button>
                     </>
                   )}
-                  <Input value={sizePriceInput} onChange={e => setSizePriceInput(e.target.value)} placeholder={translations[lang]?.specialPrice} type="number" min="0" className="w-32" />
-                  <Button type="button" onClick={addSize}>{translations[lang]?.add}</Button>
+                  <Input value={sizePriceInput} onChange={e => setSizePriceInput(e.target.value)} placeholder={translations[defaultLang]?.specialPrice} type="number" min="0" className="w-32" />
+                  <Button type="button" onClick={addSize}>{translations[defaultLang]?.add}</Button>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {sizes.map((s, idx) => (
                     <span key={idx} className="bg-gray-200 rounded px-2 py-1 flex items-center">
                       {s.value}{s.price ? ` (${s.price} USD)` : ''}
-                      <button type="button" onClick={() => removeSize(idx)} className="ml-1 text-red-500">{translations[lang]?.remove}</button>
+                      <button type="button" onClick={() => removeSize(idx)} className="ml-1 text-red-500">{translations[defaultLang]?.remove}</button>
                     </span>
                   ))}
                 </div>
@@ -665,7 +641,7 @@ export default function EditProductPage() {
 
               {/* Colors */}
               <div className="space-y-2">
-                <Label>{translations[lang]?.colors}</Label>
+                <Label>{translations[defaultLang]?.colors}</Label>
                 <div className="flex gap-2 mb-2 items-center">
                   {!showManualColor ? (
                     <>
@@ -674,31 +650,31 @@ export default function EditProductPage() {
                         onChange={e => setColorInput(e.target.value)}
                         className="border rounded px-2 py-1"
                       >
-                        <option value="">{translations[lang]?.selectColor}</option>
+                        <option value="">{translations[defaultLang]?.selectColor}</option>
                         {defaultColors.map((cl) => (
                           <option key={cl} value={cl}>{cl}</option>
                         ))}
                       </select>
                       <Button type="button" variant="outline" size="sm" onClick={() => setShowManualColor(true)}>
-                        {translations[lang]?.addManual}
+                        {translations[defaultLang]?.addManual}
                       </Button>
                     </>
                   ) : (
                     <>
-                      <Input value={colorInput} onChange={e => setColorInput(e.target.value)} placeholder={translations[lang]?.colorExample} />
+                      <Input value={colorInput} onChange={e => setColorInput(e.target.value)} placeholder={translations[defaultLang]?.colorExample} />
                       <Button type="button" variant="outline" size="sm" onClick={() => setShowManualColor(false)}>
-                        {translations[lang]?.pickFromList}
+                        {translations[defaultLang]?.pickFromList}
                       </Button>
                     </>
                   )}
-                  <Input value={colorPriceInput} onChange={e => setColorPriceInput(e.target.value)} placeholder={translations[lang]?.specialPrice} type="number" min="0" className="w-32" />
-                  <Button type="button" onClick={addColor}>{translations[lang]?.add}</Button>
+                  <Input value={colorPriceInput} onChange={e => setColorPriceInput(e.target.value)} placeholder={translations[defaultLang]?.specialPrice} type="number" min="0" className="w-32" />
+                  <Button type="button" onClick={addColor}>{translations[defaultLang]?.add}</Button>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {colors.map((c, idx) => (
                     <span key={idx} className="bg-gray-200 rounded px-2 py-1 flex items-center">
                       {c.value}{c.price ? ` (${c.price} USD)` : ''}
-                      <button type="button" onClick={() => removeColor(idx)} className="ml-1 text-red-500">{translations[lang]?.remove}</button>
+                      <button type="button" onClick={() => removeColor(idx)} className="ml-1 text-red-500">{translations[defaultLang]?.remove}</button>
                     </span>
                   ))}
                 </div>
@@ -707,14 +683,14 @@ export default function EditProductPage() {
               {/* Images */}
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold">{translations[lang]?.productImages}</h3>
-                  <Badge variant="secondary" className="text-xs">{translations[lang]?.optional}</Badge>
+                  <h3 className="text-lg font-semibold">{translations[defaultLang]?.productImages}</h3>
+                  <Badge variant="secondary" className="text-xs">{translations[defaultLang]?.optional}</Badge>
                 </div>
                 
                 {/* Existing Images */}
                 {existingImages.length > 0 && (
                   <div className="space-y-4">
-                    <h4 className="text-sm font-medium text-gray-700">{translations[lang]?.currentImages}</h4>
+                    <h4 className="text-sm font-medium text-gray-700">{translations[defaultLang]?.currentImages}</h4>
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                       {existingImages.map((url, index) => (
                         <div key={`existing-${index}`} className="relative">
@@ -738,14 +714,14 @@ export default function EditProductPage() {
                 
                 {/* Upload New Images */}
                 <div className="space-y-4">
-                  <h4 className="text-sm font-medium text-gray-700">{translations[lang]?.addNewImages}</h4>
+                  <h4 className="text-sm font-medium text-gray-700">{translations[defaultLang]?.addNewImages}</h4>
                   <div className="border-2 border-dashed border-gray-300 rounded-lg p-6">
                     <div className="text-center">
                       <Upload className="mx-auto h-12 w-12 text-gray-400" />
                       <div className="mt-4">
                         <Label htmlFor="images" className="cursor-pointer">
                           <Button variant="outline" asChild>
-                            <span>{translations[lang]?.uploadImages}</span>
+                            <span>{translations[defaultLang]?.uploadImages}</span>
                           </Button>
                         </Label>
                         <input
@@ -758,7 +734,7 @@ export default function EditProductPage() {
                         />
                       </div>
                       <p className="text-sm text-gray-500 mt-2">
-                        {translations[lang]?.upTo5}
+                        {translations[defaultLang]?.upTo5}
                       </p>
                     </div>
                   </div>
@@ -791,11 +767,11 @@ export default function EditProductPage() {
               <div className="flex justify-end space-x-4">
                 <Link href="/dashboard">
                   <Button type="button" variant="outline">
-                    {translations[lang]?.cancel}
+                    {translations[defaultLang]?.cancel}
                   </Button>
                 </Link>
                 <Button type="submit" disabled={loading || uploadingImages}>
-                  {loading ? translations[lang]?.loading : translations[lang]?.update}
+                  {loading ? translations[defaultLang]?.loading : translations[defaultLang]?.update}
                 </Button>
               </div>
             </form>
