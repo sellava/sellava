@@ -40,22 +40,24 @@ export default function SignInPage() {
       await signIn(email, password);
       toast.success('تم تسجيل الدخول بنجاح');
       router.push('/dashboard');
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Sign in error:', error);
       
       // معالجة أفضل للأخطاء
       let errorMessage = 'حدث خطأ في تسجيل الدخول';
       
-      if (error.code === 'auth/user-not-found') {
+      const err = error as { code?: string; message?: string };
+      
+      if (err.code === 'auth/user-not-found') {
         errorMessage = 'البريد الإلكتروني غير مسجل';
-      } else if (error.code === 'auth/wrong-password') {
+      } else if (err.code === 'auth/wrong-password') {
         errorMessage = 'كلمة المرور غير صحيحة';
-      } else if (error.code === 'auth/invalid-email') {
+      } else if (err.code === 'auth/invalid-email') {
         errorMessage = 'البريد الإلكتروني غير صحيح';
-      } else if (error.code === 'auth/too-many-requests') {
+      } else if (err.code === 'auth/too-many-requests') {
         errorMessage = 'تم تجاوز عدد المحاولات، حاول لاحقاً';
-      } else if (error.message) {
-        errorMessage = error.message;
+      } else if (err.message) {
+        errorMessage = err.message;
       }
       
       toast.error(errorMessage);

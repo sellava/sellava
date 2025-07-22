@@ -403,7 +403,7 @@ export default function CouponsSettingsPage() {
     saveCoupons(updated);
   };
 
-  if (planType !== "paid") {
+  if (planType === "free") {
     return (
       <div className="max-w-xl mx-auto p-8 mt-12 bg-white rounded-xl shadow text-center">
         <h1 className="text-2xl font-bold mb-4">{t.manageCoupons}</h1>
