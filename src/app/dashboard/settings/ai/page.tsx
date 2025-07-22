@@ -21,7 +21,6 @@ import {
   Image,
   Code,
   CheckCircle,
-  AlertCircle,
   X,
   Send
 } from 'lucide-react';

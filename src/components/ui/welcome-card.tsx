@@ -6,7 +6,6 @@ import Link from 'next/link';
 interface WelcomeCardProps {
   isNewUser?: boolean;
   completedSteps?: string[];
-  onCompleteStep?: (step: string) => void;
 }
 
 const steps = [
@@ -42,8 +41,7 @@ const steps = [
 
 export function WelcomeCard({ 
   isNewUser = false, 
-  completedSteps = [], 
-  onCompleteStep 
+  completedSteps = [] 
 }: WelcomeCardProps) {
   if (!isNewUser) {
     return null;

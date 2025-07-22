@@ -3,10 +3,9 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle, Clock, CreditCard, Banknote, Home, ShoppingBag } from 'lucide-react';
-import { toast } from 'sonner';
 
 export default function OrderConfirmationPage() {
   const router = useRouter();
