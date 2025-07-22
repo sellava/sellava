@@ -22,7 +22,7 @@ import {
   validateCoupon 
 } from '@/lib/cart-service';
 import { ConnectionStatus } from '@/components/ui/connection-status';
-import type { CartItem } from '@/types';
+import type { CartItem, Coupon } from '@/types';
 
 export default function CartCheckoutPage() {
   const router = useRouter();
@@ -52,7 +52,7 @@ export default function CartCheckoutPage() {
   const [deliveryCost, setDeliveryCost] = useState(0);
 
   // --- Store coupons ---
-  const [couponDetails, setCouponDetails] = useState<Record<string, any> | null>(null);
+  const [couponDetails, setCouponDetails] = useState<Coupon | null>(null);
 
   // --- Payment settings ---
   const [storePaymentSettings, setStorePaymentSettings] = useState<Record<string, unknown> | null>(null);
@@ -836,7 +836,7 @@ export default function CartCheckoutPage() {
                           <strong>Discount Percentage:</strong> {couponDetails.discountPercentage}%
                         </p>
                         <p className="text-green-800 text-sm font-medium">
-                          <strong>Expiration Date:</strong> {couponDetails.validUntil}
+                          <strong>Expiration Date:</strong> {couponDetails.validUntil instanceof Date ? couponDetails.validUntil.toLocaleDateString() : String(couponDetails.validUntil)}
                         </p>
                         {couponDetails.maxUsage && (
                           <p className="text-green-800 text-sm font-medium">
