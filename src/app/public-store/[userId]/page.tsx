@@ -166,7 +166,7 @@ export default function PublicStorePage() {
   useEffect(() => {
     const newPrices: { [productId: string]: number } = {};
     filteredProducts.forEach((product) => {
-      let basePrice = product.price;
+      const basePrice = product.price;
       let colorPrice = basePrice;
       let sizePrice = basePrice;
       if (product.colors && selectedColors[product.id]) {

@@ -65,7 +65,7 @@ export function WelcomeCard({
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {steps.map((step, index) => {
+          {steps.map((step) => {
             const isCompleted = completedSteps.includes(step.id);
             const Icon = step.icon;
             

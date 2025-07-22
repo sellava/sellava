@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
-import { CreditCard, Banknote, Settings, AlertCircle, CheckCircle, Info } from 'lucide-react';
+import { CreditCard, Banknote, AlertCircle, CheckCircle, Info } from 'lucide-react';
 import { toast } from 'sonner';
 import { getStore, updateStore } from '@/lib/firebase-services';
 import type { Store } from '@/types';

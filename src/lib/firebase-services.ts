@@ -65,7 +65,7 @@ export const updateUserPlan = async (uid: string, planType: 'free' | 'monthly' |
   if (planType !== 'free') {
     const now = new Date();
     const startDate = now;
-    let expiryDate = new Date();
+    const expiryDate = new Date();
 
     switch (planType) {
       case 'monthly':

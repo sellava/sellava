@@ -28,7 +28,7 @@ import {
 import { toast } from 'sonner';
 import Link from 'next/link';
 import { getStore, getProducts, getOrders, getCustomers, createStore, deleteProduct } from '@/lib/firebase-services';
-import type { Store as StoreType, Product, Order, Customer } from '@/types';
+import type { Store as StoreType, Product, Order, Customer, User, Coupon } from '@/types';
 
 // --- الترجمة ---
 const translations: Record<string, Record<string, string>> = {
@@ -1503,7 +1503,7 @@ export default function DashboardPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeCoupons, setActiveCoupons] = useState<any[]>([]);
+  const [activeCoupons, setActiveCoupons] = useState<Coupon[]>([]);
 
   // Helper functions
   const getDaysRemaining = (expiryDate: Date): number => {
@@ -1730,7 +1730,7 @@ export default function DashboardPage() {
         try {
           const defaultStore = {
             userId: user.uid,
-            storeTitle: (user as any).displayName || 'متجري الجديد',
+            storeTitle: (user as User).name || 'متجري الجديد',
             storeBio: 'مرحباً بكم في متجري',
             storeCountry: 'usa',
             planType: user.planType || 'free',
@@ -2304,7 +2304,7 @@ export default function DashboardPage() {
                           <div>
                             <div className="font-bold text-lg">{coupon.code}</div>
                             <div className="text-sm text-gray-600">{t('discountPercentage')}: {coupon.discountPercentage}%</div>
-                            <div className="text-sm text-gray-600">{t('validUntil')}: {coupon.validUntil}</div>
+                            <div className="text-sm text-gray-600">{t('validUntil')}: {coupon.validUntil instanceof Date ? coupon.validUntil.toLocaleDateString() : String(coupon.validUntil)}</div>
                             {coupon.maxUsage && <div className="text-sm text-gray-600">{t('maxUsage')}: {coupon.maxUsage} {t('uses')}</div>}
                             <div className="text-sm text-gray-600">{t('usageCount')}: {coupon.usageCount}</div>
                           </div>

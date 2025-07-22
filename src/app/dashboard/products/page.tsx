@@ -31,7 +31,7 @@ export default function ProductsPage() {
       setLoading(true);
       const productsData = await getProducts(user.uid);
       setProducts(productsData || []);
-    } catch (error) {
+    } catch {
       setProducts([]);
     } finally {
       setLoading(false);

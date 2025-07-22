@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/auth-context';
-import { useLanguage } from '@/contexts/language-context';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -17,7 +16,6 @@ import type { Store as StoreType } from '@/types';
 
 export default function GeneralSettingsPage() {
   const { user } = useAuth();
-  const { t } = useLanguage();
   const router = useRouter();
   
   const [formData, setFormData] = useState({
