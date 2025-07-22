@@ -78,8 +78,6 @@ const translations = {
 
 const defaultLang = 'en';
 
-type LangKey = keyof typeof translations;
-
 export default function EditProductPage() {
   const { user } = useAuth();
   const router = useRouter();

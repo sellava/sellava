@@ -171,7 +171,7 @@ export const validateCoupon = (couponCode: string, subtotal: number): { valid: b
 };
 
 // Helper function to validate cart item
-const isValidCartItem = (item: any): boolean => {
+const isValidCartItem = (item: CartItem): boolean => {
   return (
     item &&
     typeof item === 'object' &&

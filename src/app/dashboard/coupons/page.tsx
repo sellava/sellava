@@ -341,7 +341,6 @@ export default function CouponsSettingsPage() {
     maxUsage: "",
     isActive: true,
   });
-  const [saving, setSaving] = useState(false);
 
   // Load coupons from localStorage
   useEffect(() => {
@@ -469,7 +468,7 @@ export default function CouponsSettingsPage() {
               <span>{t.active}</span>
             </div>
             <div className="flex items-center mt-2">
-              <Button type="submit" className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold" disabled={saving}>{t.addCoupon}</Button>
+              <Button type="submit" className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold">{t.addCoupon}</Button>
             </div>
           </form>
         </CardContent>

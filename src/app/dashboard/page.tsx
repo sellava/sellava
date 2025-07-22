@@ -17,7 +17,6 @@ import {
   Plus, 
   TrendingUp,
   DollarSign,
-  Eye,
   LogOut,
   CheckCircle,
   Edit,

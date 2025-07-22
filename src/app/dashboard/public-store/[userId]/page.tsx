@@ -7,13 +7,14 @@ import { Button } from '@/components/ui/button';
 import { ShoppingCart, Store } from 'lucide-react';
 import Link from 'next/link';
 import { getStore, getProducts } from '@/lib/firebase-services';
+import type { Store as StoreType, Product } from '@/types';
 
 export default function PublicStorePage() {
   const router = useRouter();
   const params = useParams();
   const userId = params?.userId as string;
-  const [store, setStore] = useState<any>(null);
-  const [products, setProducts] = useState<any[]>([]);
+  const [store, setStore] = useState<StoreType | null>(null);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
