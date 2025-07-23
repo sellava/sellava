@@ -1,0 +1,31 @@
+{
+    "root": true,
+    "extends": [
+      "next",
+      "next/core-web-vitals",
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:react/recommended",
+      "plugin:react-hooks/recommended",
+      "prettier"
+    ],
+    "plugins": ["@typescript-eslint", "react", "react-hooks"],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "ecmaVersion": 2020,
+      "sourceType": "module"
+    },
+    "rules": {
+      "no-unused-vars": "warn",
+      "@typescript-eslint/no-unused-vars": ["warn"],
+      "react/react-in-jsx-scope": "off"
+    },
+    "ignorePatterns": [
+      "node_modules/",
+      ".next/",
+      "out/",
+      "dist/",
+      "build/"
+    ]
+  }
+  
